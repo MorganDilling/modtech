@@ -1,6 +1,6 @@
 <div align="center">
-  <h1>📁 Typescript Discord bot template</h1>
-  <p>Template for TypeScript Discord bots (v14)</p>
+  <h1>🛠️ Modtech</h1>
+  <p>A utilities and moderation bot for Discord.</p>
 
 <a href="/LICENSE">
   <img alt="GitHub" src="https://img.shields.io/github/license/morgandilling/ts-node-project-template?style=for-the-badge">

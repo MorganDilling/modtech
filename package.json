@@ -1,7 +1,7 @@
 {
-  "name": "ts-bot-template",
+  "name": "modtech",
   "version": "1.0.0",
-  "description": "Template for TypeScript Discord bots",
+  "description": "A utilities and moderation bot for Discord.",
   "main": "src/index.ts",
   "scripts": {
     "dev": "ts-node-dev --files -r tsconfig-paths/register --exit-child src/index.ts",
