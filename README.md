@@ -26,6 +26,14 @@ Create a file named `config.json` in the root directory of the project. This fil
 }
 ```
 
+Create a file named `.env` in the root directory of the project. This file should contain the following:
+
+```env
+DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
+```
+
+Where the DATEBASE_URL is a valid PostgreSQL connection string.
+
 ## Scripts
 
 - `pnpm run start` - Run the project in production
