@@ -3,6 +3,7 @@ import {
   CommandInteraction,
   CacheType,
   TextChannel,
+  PermissionFlagsBits,
 } from 'discord.js';
 import ExtendedClient from 'classes/ExtendedClient';
 import Command from 'classes/Command';
@@ -18,7 +19,7 @@ export default class Kick extends Command {
       .setName(this.name)
       .setDescription('Kick a user from the server')
       .setDMPermission(false)
-      .setDefaultMemberPermissions(2) // KICK_MEMBERS
+      .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
       .addUserOption((option) =>
         option.setName('user').setDescription('User to kick').setRequired(true)
       );

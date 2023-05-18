@@ -10,6 +10,7 @@ import {
   ActionRowData,
   EmbedBuilder,
   ColorResolvable,
+  PermissionFlagsBits,
 } from 'discord.js';
 import ExtendedClient from 'classes/ExtendedClient';
 import SettingsNotFoundException from 'exceptions/SettingsNotFoundException';
@@ -25,7 +26,7 @@ export default class Settings extends Command {
       .setName(this.name)
       .setDescription("Configure your bot's server settings")
       .setDMPermission(false)
-      .setDefaultMemberPermissions(32) // MANAGE_SERVER
+      .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
       .addStringOption((option) =>
         option
           .setName('setting')

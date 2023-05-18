@@ -4,6 +4,7 @@ import {
   CacheType,
   TextChannel,
   CommandInteractionOptionResolver,
+  PermissionFlagsBits,
 } from 'discord.js';
 import ExtendedClient from 'classes/ExtendedClient';
 import Command from 'classes/Command';
@@ -20,7 +21,7 @@ export default class Ban extends Command {
       .setName(this.name)
       .setDescription('Bans a user from the server')
       .setDMPermission(false)
-      .setDefaultMemberPermissions(4) // BAN_MEMBERS
+      .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
       .addUserOption((option) =>
         option.setName('user').setDescription('User to ban').setRequired(true)
       )
