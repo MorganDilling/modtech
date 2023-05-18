@@ -123,6 +123,23 @@ export default class Ban extends Command {
       interaction.options as CommandInteractionOptionResolver<CacheType>
     ).getString('reason');
 
+    let couldDM = true;
+    try {
+      await user.send({
+        content: `> :warning: You have been banned from **${guild.name}**${
+          reason ? ` for the following reason:\n> \`\`\`${reason}\`\`\`` : ''
+        }${
+          durationUnix
+            ? `\n> :information_source: Expires <t:${Math.floor(
+                new Date(Date.now() + durationUnix).getTime() / 1000
+              )}:R>`
+            : ''
+        }`,
+      });
+    } catch {
+      couldDM = false;
+    }
+
     try {
       await member.ban({
         reason: reason ? reason : 'No reason specified',
@@ -148,7 +165,11 @@ export default class Ban extends Command {
 
       if (!channel) {
         interaction.reply({
-          content: `> :white_check_mark: Successfully banned ${user.tag}.\n> :warning: Logging channel not found. Please reconfigure logging settings.`,
+          content: `> :white_check_mark: Successfully banned ${
+            user.tag
+          }.\n> :warning: Logging channel not found. Please reconfigure logging settings.${
+            couldDM ? '' : '\n> :warning: Could not DM user'
+          }`,
           ephemeral: true,
         });
         return;
@@ -164,19 +185,36 @@ export default class Ban extends Command {
         interaction.user.id,
         user.id,
         `for ${reason ? reason : 'No reason specified'}. ${
-          expiryDate ? `Expires <t:${expiryDate}>` : ''
+          expiryDate ? `Expires <t:${expiryDate}:R>` : ''
         }`
       );
+
+      if (durationUnix) {
+        const ban = await client.prisma.ban.create({
+          data: {
+            guildId: guild.id,
+            userId: user.id,
+            expiresAt: new Date(Date.now() + durationUnix),
+            moderatorId: interaction.user.id,
+          },
+        });
+
+        client.cache.bans.set(ban.id, ban);
+      }
 
       await channel.send({ embeds: [embed] });
 
       await interaction.reply({
-        content: `> :white_check_mark: Successfully banned ${user.tag}. Action logged.`,
+        content: `> :white_check_mark: Successfully banned ${
+          user.tag
+        }. Action logged.${couldDM ? '' : '\n> :warning: Could not DM user'}`,
         ephemeral: true,
       });
     } else {
       await interaction.reply({
-        content: `> :white_check_mark: Successfully banned ${user.tag}`,
+        content: `> :white_check_mark: Successfully banned ${user.tag}${
+          couldDM ? '' : '\n> :warning: Could not DM user'
+        }`,
         ephemeral: true,
       });
     }
