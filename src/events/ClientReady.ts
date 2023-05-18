@@ -6,6 +6,9 @@ import CommandRegisterFailException from 'exceptions/CommandRegisterFailExceptio
 import { getAverageColor } from 'fast-average-color-node';
 
 import { token } from '../../config.json';
+import Timer from 'classes/Timer';
+import Modal from 'classes/Modal';
+import Button from 'classes/Button';
 
 const rest = new REST({ version: '10' }).setToken(token);
 
@@ -14,6 +17,13 @@ export default class ClientReady extends Event {
 
   public async execute(client: ExtendedClient): Promise<void> {
     client.logger.info(`Logged in as ${client.user?.tag}`);
+
+    // Cache
+    const bans = await client.prisma.ban.findMany();
+
+    for (const ban of bans) {
+      client.cache.bans.set(ban.id, ban);
+    }
 
     // Commands
     const commands = globSync('./src/commands/**/*.ts');
@@ -48,7 +58,7 @@ export default class ClientReady extends Event {
     const buttons = globSync('./src/buttons/**/*.ts');
 
     for (const button of buttons) {
-      const btn = new (require(`../../${button}`).default)(
+      const btn: Button = new (require(`../../${button}`).default)(
         button.split(/[\\/]/).pop()?.split('.')[0]
       );
 
@@ -61,13 +71,52 @@ export default class ClientReady extends Event {
     const modals = globSync('./src/modals/**/*.ts');
 
     for (const modal of modals) {
-      const mdl = new (require(`../../${modal}`).default)(
+      const mdl: Modal = new (require(`../../${modal}`).default)(
         modal.split(/[\\/]/).pop()?.split('.')[0]
       );
 
       client.logger.info(`Loaded modal ${mdl.customId}`);
 
       client.modals.set(mdl.customId, mdl);
+    }
+
+    // Timers
+    const timers = globSync('./src/timers/**/*.ts');
+
+    for (const timer of timers) {
+      const tmr: Timer = new (require(`../../${timer}`).default)(
+        timer.split(/[\\/]/).pop()?.split('.')[0]
+      );
+
+      client.logger.info(`Loaded timer ${tmr.name}`);
+
+      client.timers.set(tmr.name, tmr);
+
+      if (tmr.executeOnStart) {
+        try {
+          tmr.execute(client);
+        } catch (error) {
+          client.logger.error(error);
+        }
+      }
+
+      if (tmr.once) {
+        setTimeout(() => {
+          try {
+            tmr.execute(client);
+          } catch (error) {
+            client.logger.error(error);
+          }
+        }, tmr.interval);
+      } else {
+        setInterval(() => {
+          try {
+            tmr.execute(client);
+          } catch (error) {
+            client.logger.error(error);
+          }
+        }, tmr.interval);
+      }
     }
 
     // Initialise Guilds

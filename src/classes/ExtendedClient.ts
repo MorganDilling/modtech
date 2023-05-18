@@ -2,16 +2,23 @@ import { Client, ClientOptions, Collection, ColorResolvable } from 'discord.js';
 import Command from './Command';
 import Button from './Button';
 import Modal from './Modal';
+import Timer from './Timer';
 import Logger from './Logger';
-import { PrismaClient } from '@prisma/client';
+import { Ban, PrismaClient } from '@prisma/client';
+
+export interface ClientCache {
+  bans: Collection<number, Ban>;
+}
 
 export default class ExtendedClient extends Client {
   public logger: Logger;
   public commands: Collection<string, Command>;
   public buttons: Collection<string, Button>;
   public modals: Collection<string, Modal>;
+  public timers: Collection<string, Timer>;
   public prisma: PrismaClient;
   public color: ColorResolvable;
+  public cache: ClientCache;
 
   constructor(options: ClientOptions) {
     super(options);
@@ -20,7 +27,11 @@ export default class ExtendedClient extends Client {
     this.commands = new Collection();
     this.buttons = new Collection();
     this.modals = new Collection();
+    this.timers = new Collection();
     this.prisma = new PrismaClient();
     this.color = '#5865F2';
+    this.cache = {
+      bans: new Collection(),
+    };
   }
 }

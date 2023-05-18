@@ -16,6 +16,7 @@ model Guild {
   updatedAt DateTime  @updatedAt
   premium   Boolean   @default(false)
   settings  Settings?
+  bans      Ban[]
 }
 
 model Settings {
@@ -58,4 +59,16 @@ model SupportDepartments {
   description    String?
   emoji          String?
   inboxChannelId String
+}
+
+model Ban {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  guild       Guild    @relation(fields: [guildId], references: [id])
+  guildId     String
+  userId      String
+  reason      String?
+  moderatorId String
+  expiresAt   DateTime
 }
