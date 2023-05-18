@@ -34,6 +34,7 @@ export default class Settings extends Command {
           )
           .addChoices(
             { name: 'Toggle logging', value: 'LOGGING' },
+            { name: 'Logging channel', value: 'LOGGING_CHANNEL' },
             { name: 'Exempt roles', value: 'EXEMPT_ROLES' },
             { name: 'Exempt users', value: 'EXEMPT_USERS' },
             { name: 'Support departments', value: 'SUPPORT' }
@@ -84,6 +85,12 @@ export default class Settings extends Command {
 
       settingsDesc += `**Logging enabled**\n\`${settings.logging}\`${
         dbGuild.premium === false ? ' (Premium only)' : ''
+      }${
+        settings.logging
+          ? !!settings.loggingChannelId
+            ? `\n**Logging channel**\n<#${settings.loggingChannelId}>`
+            : '\n**Logging channel**\nNone'
+          : ''
       }\n\n`;
 
       settingsDesc += `**Exempt Roles**\n`;
@@ -157,6 +164,43 @@ export default class Settings extends Command {
             }`,
             ephemeral: true,
           });
+          break;
+        }
+        case 'LOGGING_CHANNEL': {
+          if (dbGuild.premium === false) {
+            await interaction.reply({
+              content: `> :warning: Logging is a premium-only setting`,
+              ephemeral: true,
+            });
+            return;
+          }
+
+          const loggingChannelId = settings.loggingChannelId;
+
+          const embed = new EmbedBuilder()
+            .setTitle('Logging Channel')
+            .setColor(client.color)
+            .setDescription(
+              `${
+                !!loggingChannelId
+                  ? `The current logging channel is <#${loggingChannelId}>`
+                  : 'There is no logging channel set'
+              }\n\n:information_source: Click the button below to update the logging channel`
+            );
+
+          const row = new ActionRowBuilder().addComponents(
+            new ButtonBuilder()
+              .setCustomId('settings-logging-update')
+              .setLabel('Update Logging Channel')
+              .setStyle(ButtonStyle.Primary)
+          );
+
+          await interaction.reply({
+            embeds: [embed],
+            components: [row as any],
+            ephemeral: true,
+          });
+
           break;
         }
         case 'EXEMPT_ROLES': {
