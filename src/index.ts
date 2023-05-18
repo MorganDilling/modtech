@@ -22,13 +22,21 @@ for (const file of eventFiles) {
   client.logger.info(`Loaded event ${event.name}`);
 
   if (event.once) {
-    client.once(events[event.name], (...args: unknown[]) =>
-      event.execute(client, ...args)
-    );
+    client.once(events[event.name], (...args: unknown[]) => {
+      try {
+        event.execute(client, ...args);
+      } catch (error) {
+        client.logger.error(error);
+      }
+    });
   } else {
-    client.on(events[event.name], (...args: unknown[]) =>
-      event.execute(client, ...args)
-    );
+    client.on(events[event.name], (...args: unknown[]) => {
+      try {
+        event.execute(client, ...args);
+      } catch (error) {
+        client.logger.error(error);
+      }
+    });
   }
 }
 

@@ -13,19 +13,29 @@ import Exception from 'exceptions/Exception';
 export default class InteractionCreate extends DiscordEvent {
   public once = false;
 
-  public execute(client: ExtendedClient, interaction: Interaction): void {
+  public async execute(
+    client: ExtendedClient,
+    interaction: Interaction
+  ): Promise<void> {
     if (interaction.isCommand()) {
       const command = client.commands.get(interaction.commandName);
 
       if (!command) throw new CommandNotFoundException(interaction.commandName);
 
       try {
-        command.execute(client, interaction);
+        await command.execute(client, interaction);
+
+        if (!interaction.deferred && !interaction.replied) {
+          await interaction.reply({
+            content: `> :warning: Failed to execute command \`${command.name}\``,
+            ephemeral: true,
+          });
+        }
       } catch (error) {
         const exception = error as Exception;
         client.logger.error(error);
         interaction.reply({
-          content: `> :warning: ${exception.name} ${exception.message}`,
+          content: `> :warning: ${exception.name}: ${exception.message}`,
           ephemeral: true,
         });
       }

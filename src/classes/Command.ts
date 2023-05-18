@@ -14,10 +14,10 @@ export default abstract class Command {
       .setDescription(`Undefined command ${this.name}`);
   }
 
-  public execute(
+  public async execute(
     client: ExtendedClient,
     interaction: CommandInteraction<CacheType>
-  ): void {
+  ): Promise<void> {
     client.logger.warn(`Command ${this.name} is missing execute() method`);
     client.logger.info(interaction);
     interaction.reply({

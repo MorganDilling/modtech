@@ -5,11 +5,16 @@ export default (
   client: ExtendedClient,
   action: string,
   moderatorId: string,
-  userId: string
+  userId: string,
+  details?: string
 ) => {
   return new EmbedBuilder()
     .setTitle('Moderation Log')
-    .setDescription(`<@${moderatorId}> ${action} <@${userId}>`)
+    .setDescription(
+      `<@${moderatorId}> ${action} <@${userId}>${
+        details ? `\n*Details*: ${details}` : ''
+      }`
+    )
     .setTimestamp()
     .setColor(client.color);
 };
