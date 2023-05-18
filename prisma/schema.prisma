@@ -9,3 +9,53 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Guild {
+  id        String    @id @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  premium   Boolean   @default(false)
+  settings  Settings?
+}
+
+model Settings {
+  guildId            String                 @id @unique
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+  guild              Guild                  @relation(fields: [guildId], references: [id])
+  logging            Boolean                @default(false)
+  loggingChannelId   String?
+  exemptRoles        Settings_ExemptRoles[]
+  exemptUsers        Settings_ExemptUsers[]
+  supportDepartments SupportDepartments[]
+}
+
+model Settings_ExemptRoles {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  settings   Settings @relation(fields: [settingsId], references: [guildId])
+  settingsId String
+  roleId     String
+}
+
+model Settings_ExemptUsers {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  settings   Settings @relation(fields: [settingsId], references: [guildId])
+  settingsId String
+  userId     String
+}
+
+model SupportDepartments {
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  settings       Settings @relation(fields: [settingsId], references: [guildId])
+  settingsId     String
+  name           String
+  description    String?
+  emoji          String?
+  inboxChannelId String
+}

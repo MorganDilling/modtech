@@ -32,5 +32,11 @@ for (const file of eventFiles) {
   }
 }
 
+process.on('exit', () => {
+  client.logger.info('Exiting...');
+  client.prisma.$disconnect();
+  client.destroy();
+});
+
 // Initialise
 client.login(token);

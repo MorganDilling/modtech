@@ -1,8 +1,13 @@
 import DiscordEvent from 'classes/Event';
 import ExtendedClient from 'classes/ExtendedClient';
-import { ButtonInteraction, Interaction } from 'discord.js';
+import {
+  ButtonInteraction,
+  Interaction,
+  ModalSubmitInteraction,
+} from 'discord.js';
 import CommandNotFoundException from 'exceptions/CommandNotFoundException';
 import ButtonNotFoundException from 'exceptions/ButtonNotFoundException';
+import ModalNotFoundException from 'exceptions/ModalNotFoundException';
 import Exception from 'exceptions/Exception';
 
 export default class InteractionCreate extends DiscordEvent {
@@ -36,6 +41,26 @@ export default class InteractionCreate extends DiscordEvent {
 
       try {
         button.execute(client, interaction as ButtonInteraction);
+      } catch (error) {
+        const exception = error as Exception;
+        client.logger.error(error);
+        interaction.reply({
+          content: `> :warning: ${exception.name} ${exception.message}`,
+          ephemeral: true,
+        });
+      }
+    } else if (interaction.isModalSubmit()) {
+      const modal = client.modals.get(
+        (interaction as ModalSubmitInteraction).customId
+      );
+
+      if (!modal)
+        throw new ModalNotFoundException(
+          (interaction as ModalSubmitInteraction).customId
+        );
+
+      try {
+        modal.execute(client, interaction as ModalSubmitInteraction);
       } catch (error) {
         const exception = error as Exception;
         client.logger.error(error);
