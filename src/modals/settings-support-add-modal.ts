@@ -25,11 +25,24 @@ export default class SettingsSupportAddModal extends Modal {
       'settings-support-add-inbox-channel-id'
     );
 
+    const ticketsCategoryId = interaction.fields.getTextInputValue(
+      'settings-support-add-tickets-category-id'
+    );
+
     const inboxChannel = guild?.channels.cache.get(inboxChannelId);
 
     if (!inboxChannel) {
       await interaction.reply({
         content: `> :warning: Channel \`${inboxChannelId}\` not found`,
+      });
+      return;
+    }
+
+    const ticketsCategory = guild?.channels.cache.get(ticketsCategoryId);
+
+    if (!ticketsCategory) {
+      await interaction.reply({
+        content: `> :warning: Category \`${ticketsCategoryId}\` not found`,
       });
       return;
     }
@@ -69,6 +82,7 @@ export default class SettingsSupportAddModal extends Modal {
         description,
         emoji,
         inboxChannelId,
+        ticketsCategoryId,
         settings: {
           connect: {
             guildId: guild?.id,
