@@ -17,6 +17,7 @@ model Guild {
   premium   Boolean   @default(false)
   settings  Settings?
   bans      Ban[]
+  tickets   Ticket[]
 }
 
 model Settings {
@@ -50,15 +51,17 @@ model Settings_ExemptUsers {
 }
 
 model SupportDepartments {
-  id             Int      @id @default(autoincrement())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  settings       Settings @relation(fields: [settingsId], references: [guildId])
-  settingsId     String
-  name           String
-  description    String?
-  emoji          String?
-  inboxChannelId String
+  id                Int      @id @default(autoincrement())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  settings          Settings @relation(fields: [settingsId], references: [guildId])
+  settingsId        String
+  name              String
+  description       String?
+  emoji             String?
+  inboxChannelId    String
+  ticketsCategoryId String
+  tickets           Ticket[]
 }
 
 model Ban {
@@ -71,4 +74,21 @@ model Ban {
   reason      String?
   moderatorId String
   expiresAt   DateTime
+}
+
+model Ticket {
+  id                  Int                 @id @default(autoincrement())
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  guild               Guild               @relation(fields: [guildId], references: [id])
+  guildId             String
+  userId              String
+  channelId           String?
+  supportDepartment   SupportDepartments? @relation(fields: [supportDepartmentId], references: [id])
+  supportDepartmentId Int?
+  claimerId           String?
+  claimed             Boolean             @default(false)
+  title               String
+  issue               String
+  claimMessageId      String?
 }
