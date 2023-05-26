@@ -4,6 +4,7 @@ import {
   CacheType,
   TextChannel,
   PermissionFlagsBits,
+  CommandInteractionOptionResolver,
 } from 'discord.js';
 import ExtendedClient from 'classes/ExtendedClient';
 import Command from 'classes/Command';
@@ -22,6 +23,12 @@ export default class Kick extends Command {
       .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
       .addUserOption((option) =>
         option.setName('user').setDescription('User to kick').setRequired(true)
+      )
+      .addStringOption((option) =>
+        option
+          .setName('reason')
+          .setDescription('Reason for kicking the user')
+          .setRequired(false)
       );
   }
 
@@ -33,7 +40,7 @@ export default class Kick extends Command {
     const user = interaction.options.getUser('user');
 
     if (!guild) {
-      interaction.reply({
+      await interaction.reply({
         content: '> :warning: You can only use this command in a server',
         ephemeral: true,
       });
@@ -41,7 +48,7 @@ export default class Kick extends Command {
     }
 
     if (!user) {
-      interaction.reply({
+      await interaction.reply({
         content: '> :warning: You must specify a user to kick',
         ephemeral: true,
       });
@@ -49,7 +56,7 @@ export default class Kick extends Command {
     }
 
     if (!guild.members.cache.has(user.id)) {
-      interaction.reply({
+      await interaction.reply({
         content: '> :warning: That user is not in this server',
         ephemeral: true,
       });
@@ -59,7 +66,7 @@ export default class Kick extends Command {
     const member = guild.members.cache.get(user.id);
 
     if (!member) {
-      interaction.reply({
+      await interaction.reply({
         content: '> :warning: That user is not in this server',
         ephemeral: true,
       });
@@ -67,15 +74,30 @@ export default class Kick extends Command {
     }
 
     if (!member.kickable) {
-      interaction.reply({
+      await interaction.reply({
         content: '> :warning: That user cannot be kicked',
         ephemeral: true,
       });
       return;
     }
 
+    const reason = (
+      interaction.options as CommandInteractionOptionResolver<CacheType>
+    ).getString('reason');
+
+    let couldDM = true;
     try {
-      await member.kick();
+      await user.send({
+        content: `> :warning: You have been kicked from **${guild.name}**${
+          reason ? ` for the following reason:\n> \`\`\`${reason}\`\`\`` : ''
+        }`,
+      });
+    } catch {
+      couldDM = false;
+    }
+
+    try {
+      await member.kick(reason ? reason : 'No reason specified');
     } catch (error) {
       throw error;
     }
@@ -93,7 +115,11 @@ export default class Kick extends Command {
 
       if (!channel) {
         interaction.reply({
-          content: `> :white_check_mark: Successfully kicked ${user.tag}.\n> :warning: Logging channel not found. Please reconfigure logging settings.`,
+          content: `> :white_check_mark: Successfully kicked ${
+            user.tag
+          }.\n> :warning: Logging channel not found. Please reconfigure logging settings.${
+            couldDM ? '' : '\n> :warning: Could not DM user'
+          }`,
           ephemeral: true,
         });
         return;
@@ -103,18 +129,23 @@ export default class Kick extends Command {
         client,
         'kicked',
         interaction.user.id,
-        user.id
+        user.id,
+        `for ${reason ? reason : 'No reason specified'}.`
       );
 
       await channel.send({ embeds: [embed] });
 
       await interaction.reply({
-        content: `> :white_check_mark: Successfully kicked ${user.tag}. Action logged.`,
+        content: `> :white_check_mark: Successfully kicked ${
+          user.tag
+        }. Action logged.${couldDM ? '' : '\n> :warning: Could not DM user'}`,
         ephemeral: true,
       });
     } else {
       await interaction.reply({
-        content: `> :white_check_mark: Successfully kicked ${user.tag}`,
+        content: `> :white_check_mark: Successfully kicked ${user.tag}${
+          couldDM ? '' : '\n> :warning: Could not DM user'
+        }`,
         ephemeral: true,
       });
     }
