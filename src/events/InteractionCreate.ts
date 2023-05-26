@@ -17,6 +17,7 @@ import {
   TextInputBuilder,
   TextInputStyle,
 } from 'discord.js';
+import { createTranscript } from 'discord-html-transcripts';
 import CommandNotFoundException from 'exceptions/CommandNotFoundException';
 import ButtonNotFoundException from 'exceptions/ButtonNotFoundException';
 import ModalNotFoundException from 'exceptions/ModalNotFoundException';
@@ -249,6 +250,10 @@ export default class InteractionCreate extends DiscordEvent {
 
         return;
       } else if (interaction.customId.startsWith('support-ticket-close')) {
+        await interaction.deferReply({
+          ephemeral: true,
+        });
+
         const ticketId = interaction.customId.split('.')[1];
         const ticket = await client.prisma.ticket.findUnique({
           where: {
@@ -275,7 +280,14 @@ export default class InteractionCreate extends DiscordEvent {
           return;
         }
 
-        // TODO: Add transcript logging (https://www.npmjs.com/package/discord-html-transcripts)
+        const attachment = await createTranscript(
+          interaction.channel as TextChannel,
+          {
+            filename: `ticket-${ticket.id}.html`,
+            saveImages: true,
+            poweredBy: false,
+          }
+        );
 
         const inboxChannel = await interaction.guild?.channels.fetch(
           ticket.supportDepartment?.inboxChannelId as string
@@ -297,9 +309,32 @@ export default class InteractionCreate extends DiscordEvent {
           },
         });
 
-        await interaction.reply({
+        try {
+          await interaction.user.send({
+            content: `> :white_check_mark: Ticket ${ticketId} closed, thanks for helping out. Here is your transcript:`,
+            files: [attachment],
+          });
+        } catch {
+          await interaction.channel?.send(
+            `> :warning: Failed to send transcript to <@${interaction.user.id}>`
+          );
+        }
+
+        const ticketUser = await client.users.fetch(ticket.userId);
+
+        try {
+          await ticketUser.send({
+            content: `> :white_check_mark: Ticket ${ticketId} closed. Here is your transcript:`,
+            files: [attachment],
+          });
+        } catch {
+          await interaction.channel?.send(
+            `> :warning: Failed to send transcript to <@${ticket.userId}>`
+          );
+        }
+
+        await interaction.editReply({
           content: `> :white_check_mark: Ticket closed. Deleting channel in 5 seconds...`,
-          ephemeral: true,
         });
 
         setTimeout(async () => {
