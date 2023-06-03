@@ -41,7 +41,7 @@ export default class Acknowledgements extends Command {
           Object.keys(packageJson.dependencies)
             .map(
               (dependency) =>
-                `\n- [${dependency}](https://www.npmjs.com/package/${dependency})`
+                `\n- [${dependency}](https://www.npmjs.com/package/${dependency}) (${packageJson.dependencies[dependency]})`
             )
             .join('') +
           '\n\n' +
