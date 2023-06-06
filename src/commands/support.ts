@@ -21,10 +21,12 @@ export default class Support extends Command {
     super(name);
   }
 
+  description = 'Opens a support ticket';
+
   get data(): Partial<SlashCommandBuilder> {
     return new SlashCommandBuilder()
       .setName(this.name)
-      .setDescription('Opens a support ticket')
+      .setDescription(this.description)
       .setDMPermission(false)
       .addStringOption((option) =>
         option

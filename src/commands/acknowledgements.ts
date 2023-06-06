@@ -20,10 +20,12 @@ export default class Acknowledgements extends Command {
     super(name);
   }
 
+  description = 'View acknowledgements.';
+
   get data(): Partial<SlashCommandBuilder> {
     return new SlashCommandBuilder()
       .setName(this.name)
-      .setDescription('View acknowledgements.');
+      .setDescription(this.description);
   }
 
   public async execute(
