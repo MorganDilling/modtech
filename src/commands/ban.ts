@@ -16,10 +16,12 @@ export default class Ban extends Command {
     super(name);
   }
 
+  description = 'Bans a user from the server';
+
   get data(): Partial<SlashCommandBuilder> {
     return new SlashCommandBuilder()
       .setName(this.name)
-      .setDescription('Bans a user from the server')
+      .setDescription(this.description)
       .setDMPermission(false)
       .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
       .addUserOption((option) =>

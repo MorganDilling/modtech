@@ -21,10 +21,12 @@ export default class Settings extends Command {
     super(name);
   }
 
+  description = "Configure your bot's server settings";
+
   get data(): Partial<SlashCommandBuilder> {
     return new SlashCommandBuilder()
       .setName(this.name)
-      .setDescription("Configure your bot's server settings")
+      .setDescription(this.description)
       .setDMPermission(false)
       .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
       .addStringOption((option) =>

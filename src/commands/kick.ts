@@ -15,10 +15,12 @@ export default class Kick extends Command {
     super(name);
   }
 
+  description = 'Kick a user from the server';
+
   get data(): Partial<SlashCommandBuilder> {
     return new SlashCommandBuilder()
       .setName(this.name)
-      .setDescription('Kick a user from the server')
+      .setDescription(this.description)
       .setDMPermission(false)
       .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
       .addUserOption((option) =>

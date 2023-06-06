@@ -4,14 +4,16 @@ import ExtendedClient from './ExtendedClient';
 
 export default abstract class Command {
   public name: string;
+  public description: string;
   constructor(name: string) {
     this.name = name;
+    this.description = `Undefined command ${name}`;
   }
 
   get data(): Partial<SlashCommandBuilder> {
     return new SlashCommandBuilder()
       .setName(this.name)
-      .setDescription(`Undefined command ${this.name}`);
+      .setDescription(this.description);
   }
 
   public async execute(
