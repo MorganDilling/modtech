@@ -19,7 +19,7 @@ for (const file of eventFiles) {
     file.split(/[\\/]/).pop()?.split('.')[0]
   );
 
-  client.logger.info(`Loaded event ${event.name}`);
+  client.logger.info(`Loaded event: ${event.name}`);
 
   if (event.once) {
     client.once(events[event.name], (...args: unknown[]) => {

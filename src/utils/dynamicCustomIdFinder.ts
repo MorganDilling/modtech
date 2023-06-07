@@ -1,5 +1,6 @@
 import Button from 'classes/Button';
 import Modal from 'classes/Modal';
+import StringSelectMenu from 'classes/StringSelectMenu';
 import { Collection } from 'discord.js';
 
 /** Regex for extracting content from [] */
@@ -101,9 +102,9 @@ const getMatchingId = (
  * @param route The custom id of the button or modal. It can include dynamic parts. e.g. `support-close-20392` which would trigger the button with the id `support-close-[ticketId]`
  */
 const dynamicCustomIdFinder = (
-  collection: Collection<string, Modal | Button>,
+  collection: Collection<string, Modal | Button | StringSelectMenu>,
   route: string
-): [Modal | Button | null, { [slug: string]: string }?] => {
+): [Modal | Button | StringSelectMenu | null, { [slug: string]: string }?] => {
   const exactMatch = collection.get(route);
   if (exactMatch) return [exactMatch];
 

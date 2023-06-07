@@ -82,13 +82,13 @@ export default class Support extends Command {
     const departmentOptions = availableDepartments.map((department) => {
       return {
         label: department.name,
-        value: 'support-ticket-open.' + department.id.toString(),
+        value: department.id.toString(),
         description: department.description || undefined,
       };
     });
 
     const department = new StringSelectMenuBuilder()
-      .setCustomId(`support-ticket-open-department.${ticket.id}`)
+      .setCustomId(`support-ticket-open-department-${ticket.id}`)
       .setPlaceholder('Select a department')
       .setMinValues(1)
       .setMaxValues(1)

@@ -9,6 +9,7 @@ import { token } from '../../config.json';
 import Timer from 'classes/Timer';
 import Modal from 'classes/Modal';
 import Button from 'classes/Button';
+import StringSelectMenu from 'classes/StringSelectMenu';
 
 const rest = new REST({ version: '10' }).setToken(token);
 
@@ -33,7 +34,7 @@ export default class ClientReady extends Event {
         command.split(/[\\/]/).pop()?.split('.')[0]
       );
 
-      client.logger.info(`Loaded command ${cmd.name}`);
+      client.logger.info(`Loaded command: ${cmd.name}`);
 
       client.commands.set(cmd.name, cmd);
     }
@@ -44,7 +45,7 @@ export default class ClientReady extends Event {
 
     const commandData = client.commands.map((command) => command.data);
 
-    client.logger.info(`Registering ${commandData.length} command(s)`);
+    client.logger.info(`Registering ${commandData.length} command(s)...`);
     try {
       await rest.put(Routes.applicationCommands(id), {
         body: commandData,
@@ -62,7 +63,7 @@ export default class ClientReady extends Event {
         button.split(/[\\/]/).pop()?.split('.')[0]
       );
 
-      client.logger.info(`Loaded button ${btn.customId}`);
+      client.logger.info(`Loaded button: ${btn.customId}`);
 
       client.buttons.set(btn.customId, btn);
     }
@@ -75,9 +76,23 @@ export default class ClientReady extends Event {
         modal.split(/[\\/]/).pop()?.split('.')[0]
       );
 
-      client.logger.info(`Loaded modal ${mdl.customId}`);
+      client.logger.info(`Loaded modal: ${mdl.customId}`);
 
       client.modals.set(mdl.customId, mdl);
+    }
+
+    // String Select Menus
+    const stringSelectMenus = globSync('./src/stringSelectMenus/**/*.ts');
+
+    for (const stringSelectMenu of stringSelectMenus) {
+      const ssm: StringSelectMenu =
+        new (require(`../../${stringSelectMenu}`).default)(
+          stringSelectMenu.split(/[\\/]/).pop()?.split('.')[0]
+        );
+
+      client.logger.info(`Loaded string select menu: ${ssm.customId}`);
+
+      client.stringSelectMenus.set(ssm.customId, ssm);
     }
 
     // Timers
