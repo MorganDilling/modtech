@@ -7,7 +7,11 @@ export default abstract class Button {
     this.customId = customId;
   }
 
-  public execute(client: ExtendedClient, interaction: ButtonInteraction): void {
+  public execute(
+    client: ExtendedClient,
+    interaction: ButtonInteraction,
+    pathData?: { [slug: string]: string }
+  ): void {
     client.logger.warn(
       `Button ${interaction.customId} is missing execute() method`
     );

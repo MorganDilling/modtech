@@ -27,6 +27,9 @@ import { SupportDepartments } from '@prisma/client';
 import { StringSelectMenuBuilder } from 'discord.js';
 import ChannelNotFoundException from 'exceptions/ChannelNotFoundException';
 import GuildNotFoundException from 'exceptions/GuildNotFoundException';
+import dynamicCustomIdFinder from 'utils/dynamicCustomIdFinder';
+import Button from 'classes/Button';
+import Modal from 'classes/Modal';
 
 export default class InteractionCreate extends DiscordEvent {
   public once = false;
@@ -417,7 +420,8 @@ export default class InteractionCreate extends DiscordEvent {
         return;
       }
 
-      const button = client.buttons.get(
+      const [button, pathData] = dynamicCustomIdFinder(
+        client.buttons,
         (interaction as ButtonInteraction).customId
       );
 
@@ -427,7 +431,11 @@ export default class InteractionCreate extends DiscordEvent {
         );
 
       try {
-        button.execute(client, interaction as ButtonInteraction);
+        (button as Button).execute(
+          client,
+          interaction as ButtonInteraction,
+          pathData
+        );
       } catch (error) {
         const exception = error as Exception;
         client.logger.error(error);
@@ -437,7 +445,8 @@ export default class InteractionCreate extends DiscordEvent {
         });
       }
     } else if (interaction.isModalSubmit()) {
-      const modal = client.modals.get(
+      const [modal, pathData] = dynamicCustomIdFinder(
+        client.buttons,
         (interaction as ModalSubmitInteraction).customId
       );
 
@@ -447,7 +456,11 @@ export default class InteractionCreate extends DiscordEvent {
         );
 
       try {
-        modal.execute(client, interaction as ModalSubmitInteraction);
+        (modal as Modal).execute(
+          client,
+          interaction as ModalSubmitInteraction,
+          pathData
+        );
       } catch (error) {
         const exception = error as Exception;
         client.logger.error(error);

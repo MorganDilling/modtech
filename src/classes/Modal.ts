@@ -9,7 +9,8 @@ export default abstract class Modal {
 
   public execute(
     client: ExtendedClient,
-    interaction: ModalSubmitInteraction
+    interaction: ModalSubmitInteraction,
+    pathData?: { [slug: string]: string }
   ): void {
     client.logger.warn(
       `Button ${interaction.customId} is missing execute() method`
