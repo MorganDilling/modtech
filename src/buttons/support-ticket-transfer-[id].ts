@@ -21,7 +21,7 @@ import ChannelNotFoundException from 'exceptions/ChannelNotFoundException';
 import GuildNotFoundException from 'exceptions/GuildNotFoundException';
 import { createTranscript } from 'discord-html-transcripts';
 
-export default class SupportTicketClaim extends Button {
+export default class SupportTicketTransfer extends Button {
   public async execute(
     client: ExtendedClient,
     interaction: ButtonInteraction,
