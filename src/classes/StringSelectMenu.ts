@@ -1,7 +1,7 @@
-import { ButtonInteraction } from 'discord.js';
+import { StringSelectMenuInteraction } from 'discord.js';
 import ExtendedClient from './ExtendedClient';
 
-export default abstract class Button {
+export default abstract class StringSelectMenu {
   public customId: string;
   constructor(customId: string) {
     this.customId = customId;
@@ -9,7 +9,7 @@ export default abstract class Button {
 
   public execute(
     client: ExtendedClient,
-    interaction: ButtonInteraction,
+    interaction: StringSelectMenuInteraction,
     pathData?: { [slug: string]: string }
   ): void {
     client.logger.warn(
