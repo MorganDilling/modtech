@@ -12,7 +12,7 @@ export default class Logger {
 
   public warn(...args: unknown[]): void {
     console.log(
-      `[${chalk.yellow('INFO')}] ${chalk.bold(
+      `[${chalk.yellow('WARNING')}] ${chalk.bold(
         chalk.grey(new Date().toISOString())
       )}`,
       ...args
@@ -21,7 +21,7 @@ export default class Logger {
 
   public error(...args: unknown[]): void {
     console.log(
-      `[${chalk.red('INFO')}] ${chalk.bold(
+      `[${chalk.red('ERROR')}] ${chalk.bold(
         chalk.grey(new Date().toISOString())
       )}`,
       ...args
