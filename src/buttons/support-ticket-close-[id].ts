@@ -28,10 +28,6 @@ export default class SupportTicketClose extends Button {
   ): Promise<void> {
     const { id: ticketId } = pathData;
 
-    await interaction.deferReply({
-      ephemeral: true,
-    });
-
     const ticket = await client.prisma.ticket.findUnique({
       where: {
         id: parseInt(ticketId),
@@ -56,6 +52,10 @@ export default class SupportTicketClose extends Button {
       });
       return;
     }
+
+    await interaction.deferReply({
+      ephemeral: true,
+    });
 
     const attachment = await createTranscript(
       interaction.channel as TextChannel,
