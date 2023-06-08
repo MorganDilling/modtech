@@ -5,6 +5,7 @@ import ExtendedClient from './ExtendedClient';
 export default abstract class Command {
   public name: string;
   public description: string;
+  public devOnly: boolean = false;
   constructor(name: string) {
     this.name = name;
     this.description = `Undefined command ${name}`;

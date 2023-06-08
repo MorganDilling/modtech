@@ -33,6 +33,8 @@ import Button from 'classes/Button';
 import Modal from 'classes/Modal';
 import StringSelectMenu from 'classes/StringSelectMenu';
 import StringSelectMenuNotFoundException from 'exceptions/StringSelectMenuNotFoundException';
+import DeveloperOnlyException from 'exceptions/DeveloperOnlyException';
+import { owners } from '../../config.json';
 
 export default class InteractionCreate extends DiscordEvent {
   public once = false;
@@ -47,6 +49,9 @@ export default class InteractionCreate extends DiscordEvent {
       if (!command) throw new CommandNotFoundException(interaction.commandName);
 
       try {
+        if (command.devOnly && !owners.includes(interaction.user.id))
+          throw new DeveloperOnlyException(command.name);
+
         await command.execute(client, interaction);
 
         if (!interaction.deferred && !interaction.replied) {

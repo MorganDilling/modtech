@@ -13,6 +13,7 @@ import {
   PermissionFlagsBits,
 } from 'discord.js';
 import ExtendedClient from 'classes/ExtendedClient';
+import { owners } from '../../config.json';
 
 export default class Help extends Command {
   constructor(name: string) {
@@ -47,13 +48,21 @@ export default class Help extends Command {
       .setTitle('Help')
       .setDescription(
         commands
+          .filter(
+            (command) =>
+              !command.devOnly || owners.includes(interaction.user.id)
+          )
           .map((command) => `\`/${command.name}\`\n- ${command.description}`)
           .join('\n')
       )
       .setColor(client.color);
 
     const cmdEmbedDescription = commands
-      .filter((command) => command.name === commandName)
+      .filter(
+        (command) =>
+          command.name === commandName &&
+          (!command.devOnly || owners.includes(interaction.user.id))
+      )
       .map((command) => `\`/${command.name}\`\n- ${command.description}`)
       .join('\n');
 
