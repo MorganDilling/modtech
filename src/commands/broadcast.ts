@@ -25,7 +25,7 @@ export default class Broadcast extends Command {
       .setDescription(this.description)
       .setDMPermission(true)
       .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-      .addStringOption((option) =>
+      .addStringOption(option =>
         option
           .setName('message')
           .setDescription('The message to broadcast')
@@ -75,7 +75,7 @@ export default class Broadcast extends Command {
       } catch {}
 
       // wait 5 seconds to prevent rate limiting
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      await new Promise(resolve => setTimeout(resolve, 5000));
     }
 
     await interaction.editReply({

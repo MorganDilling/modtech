@@ -42,7 +42,7 @@ export default class SettingsExemptRolesAddModal extends Modal {
 
     const exemptRoles = settings.exemptRoles;
 
-    if (exemptRoles.find((exemptRole) => exemptRole.roleId === role.id)) {
+    if (exemptRoles.find(exemptRole => exemptRole.roleId === role.id)) {
       await interaction.reply({
         content: `> :warning: Role \`${role.name}\` is already exempt`,
         ephemeral: true,

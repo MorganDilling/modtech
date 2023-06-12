@@ -42,7 +42,7 @@ export default class Acknowledgements extends Command {
         'This bot is powered by the following packages:' +
           Object.keys(packageJson.dependencies)
             .map(
-              (dependency) =>
+              dependency =>
                 `\n- [${dependency}](https://www.npmjs.com/package/${dependency}) (${packageJson.dependencies[dependency]})`
             )
             .join('') +

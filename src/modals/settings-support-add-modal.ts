@@ -67,7 +67,7 @@ export default class SettingsSupportAddModal extends Modal {
 
     if (
       supportDepartments.find(
-        (supportDepartment) => supportDepartment.name === name
+        supportDepartment => supportDepartment.name === name
       )
     ) {
       await interaction.reply({

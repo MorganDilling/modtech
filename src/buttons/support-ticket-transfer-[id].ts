@@ -74,7 +74,7 @@ export default class SupportTicketTransfer extends Button {
         },
       });
 
-    const departmentOptions = availableDepartments.map((department) => {
+    const departmentOptions = availableDepartments.map(department => {
       return {
         label: department.name,
         value: department.id.toString(),

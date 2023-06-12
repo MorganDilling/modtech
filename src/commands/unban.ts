@@ -24,7 +24,7 @@ export default class Unban extends Command {
       .setDescription(this.description)
       .setDMPermission(false)
       .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
-      .addUserOption((option) =>
+      .addUserOption(option =>
         option.setName('user').setDescription('User to unban').setRequired(true)
       );
   }
@@ -112,7 +112,7 @@ export default class Unban extends Command {
     }
 
     const cachedBan = client.cache.bans.find(
-      (ban) => ban.userId === user.id && ban.guildId === guild.id
+      ban => ban.userId === user.id && ban.guildId === guild.id
     );
 
     if (cachedBan) {

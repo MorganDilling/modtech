@@ -29,7 +29,7 @@ export default class Settings extends Command {
       .setDescription(this.description)
       .setDMPermission(false)
       .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-      .addStringOption((option) =>
+      .addStringOption(option =>
         option
           .setName('setting')
           .setDescription(
@@ -101,7 +101,7 @@ export default class Settings extends Command {
         settingsDesc += 'None\n\n';
       } else {
         settingsDesc += settings.exemptRoles
-          .map((role) => `<@&${role.roleId}>`)
+          .map(role => `<@&${role.roleId}>`)
           .join(', ');
         settingsDesc += '\n\n';
       }
@@ -111,7 +111,7 @@ export default class Settings extends Command {
         settingsDesc += 'None\n\n';
       } else {
         settingsDesc += settings.exemptUsers
-          .map((user) => `<@${user.userId}>`)
+          .map(user => `<@${user.userId}>`)
           .join(', ');
         settingsDesc += '\n\n';
       }
@@ -122,7 +122,7 @@ export default class Settings extends Command {
       } else {
         settingsDesc += settings.supportDepartments
           .map(
-            (department) =>
+            department =>
               `${department.emoji ? department.emoji + ' ' : ''}*${
                 department.name
               }* • <#${department.inboxChannelId}>\n- ${department.description}`
@@ -223,7 +223,7 @@ export default class Settings extends Command {
             message += 'None\n\n';
           } else {
             message += settings.exemptRoles
-              .map((role) => `<@&${role.roleId}>`)
+              .map(role => `<@&${role.roleId}>`)
               .join(', ');
             message += '\n\n';
           }
@@ -262,7 +262,7 @@ export default class Settings extends Command {
             message += 'None\n\n';
           } else {
             message += settings.exemptUsers
-              .map((user) => `<@${user.userId}>`)
+              .map(user => `<@${user.userId}>`)
               .join(', ');
             message += '\n\n';
           }
@@ -302,7 +302,7 @@ export default class Settings extends Command {
           } else {
             message += settings.supportDepartments
               .map(
-                (department) =>
+                department =>
                   `${department.emoji ? department.emoji + ' ' : ''}*${
                     department.name
                   }* • <#${department.inboxChannelId}>\n- ${

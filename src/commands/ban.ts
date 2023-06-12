@@ -24,22 +24,22 @@ export default class Ban extends Command {
       .setDescription(this.description)
       .setDMPermission(false)
       .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
-      .addUserOption((option) =>
+      .addUserOption(option =>
         option.setName('user').setDescription('User to ban').setRequired(true)
       )
-      .addStringOption((option) =>
+      .addStringOption(option =>
         option
           .setName('reason')
           .setDescription('Reason for banning the user')
           .setRequired(false)
       )
-      .addStringOption((option) =>
+      .addStringOption(option =>
         option
           .setName('duration')
           .setDescription('Duration of the ban (e.g. 1d, 1w, 1mo, 1y)')
           .setRequired(false)
       )
-      .addStringOption((option) =>
+      .addStringOption(option =>
         option
           .setName('delete-messages')
           .setDescription('How recently to delete messages')

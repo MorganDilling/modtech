@@ -26,7 +26,7 @@ export default class Help extends Command {
     return new SlashCommandBuilder()
       .setName(this.name)
       .setDescription(this.description)
-      .addStringOption((option) =>
+      .addStringOption(option =>
         option
           .setName('command')
           .setDescription('Command to get help for')
@@ -49,21 +49,20 @@ export default class Help extends Command {
       .setDescription(
         commands
           .filter(
-            (command) =>
-              !command.devOnly || owners.includes(interaction.user.id)
+            command => !command.devOnly || owners.includes(interaction.user.id)
           )
-          .map((command) => `\`/${command.name}\`\n- ${command.description}`)
+          .map(command => `\`/${command.name}\`\n- ${command.description}`)
           .join('\n')
       )
       .setColor(client.color);
 
     const cmdEmbedDescription = commands
       .filter(
-        (command) =>
+        command =>
           command.name === commandName &&
           (!command.devOnly || owners.includes(interaction.user.id))
       )
-      .map((command) => `\`/${command.name}\`\n- ${command.description}`)
+      .map(command => `\`/${command.name}\`\n- ${command.description}`)
       .join('\n');
 
     const helpEmbedCommand = new EmbedBuilder()

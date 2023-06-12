@@ -56,7 +56,7 @@ const getPathData = (
   route: string
 ): { [slug: string]: string } => {
   const getCleanData = (data: string[]): string[] =>
-    data.map((str) => str.replace(/\[/g, '').replace(/\]/g, ''));
+    data.map(str => str.replace(/\[/g, '').replace(/\]/g, ''));
 
   const itemDataArray = getCleanData(itemId.match(EXTRACTION_REGEX) ?? []);
   const routeDataArray = getUnmatchingData(itemId, route);
@@ -87,7 +87,7 @@ const getMatchingId = (
   let matchingRouteId = route;
 
   // Replaces the values with the placeholder item
-  getUnmatchingDataIndices(itemId, route).forEach((indices) => {
+  getUnmatchingDataIndices(itemId, route).forEach(indices => {
     matchingRouteId = `${route.substring(
       0,
       indices[0]
@@ -108,7 +108,7 @@ const dynamicCustomIdFinder = (
   const exactMatch = collection.get(route);
   if (exactMatch) return [exactMatch];
 
-  const returnItem = collection.find((item) => {
+  const returnItem = collection.find(item => {
     const itemId = item.customId;
     const matchingIds = getMatchingId(itemId, route);
     return matchingIds.itemId === matchingIds.route;

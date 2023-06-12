@@ -14,7 +14,7 @@ export default class BanUpdate extends Timer {
     client: ExtendedClient,
     ...args: unknown[]
   ): Promise<void> {
-    const bans = client.cache.bans.map((ban) => ban);
+    const bans = client.cache.bans.map(ban => ban);
 
     for (const ban of bans) {
       if (Date.now() > ban.expiresAt.getTime()) {

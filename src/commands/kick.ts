@@ -23,10 +23,10 @@ export default class Kick extends Command {
       .setDescription(this.description)
       .setDMPermission(false)
       .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
-      .addUserOption((option) =>
+      .addUserOption(option =>
         option.setName('user').setDescription('User to kick').setRequired(true)
       )
-      .addStringOption((option) =>
+      .addStringOption(option =>
         option
           .setName('reason')
           .setDescription('Reason for kicking the user')

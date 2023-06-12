@@ -42,7 +42,7 @@ export default class SettingsExemptRolesRemoveModal extends Modal {
 
     const exemptRoles = settings.exemptRoles;
 
-    if (!exemptRoles.find((exemptRole) => exemptRole.roleId === role.id)) {
+    if (!exemptRoles.find(exemptRole => exemptRole.roleId === role.id)) {
       await interaction.reply({
         content: `> :warning: Role \`${role.name}\` is not exempt`,
         ephemeral: true,
@@ -52,7 +52,7 @@ export default class SettingsExemptRolesRemoveModal extends Modal {
 
     await client.prisma.settings_ExemptRoles.delete({
       where: {
-        id: exemptRoles.find((exemptRole) => exemptRole.roleId === role.id)?.id,
+        id: exemptRoles.find(exemptRole => exemptRole.roleId === role.id)?.id,
       },
     });
 

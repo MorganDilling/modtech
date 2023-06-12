@@ -42,7 +42,7 @@ export default class SettingsExemptUsersAddModal extends Modal {
 
     const exemptUsers = settings.exemptUsers;
 
-    if (exemptUsers.find((exemptUser) => exemptUser.userId === user.id)) {
+    if (exemptUsers.find(exemptUser => exemptUser.userId === user.id)) {
       await interaction.reply({
         content: `> :warning: User \`${user.tag}\` is already exempt`,
         ephemeral: true,

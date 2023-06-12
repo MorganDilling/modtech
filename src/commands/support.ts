@@ -28,13 +28,13 @@ export default class Support extends Command {
       .setName(this.name)
       .setDescription(this.description)
       .setDMPermission(false)
-      .addStringOption((option) =>
+      .addStringOption(option =>
         option
           .setName('title')
           .setDescription('Summarise your issue in a few words')
           .setRequired(true)
       )
-      .addStringOption((option) =>
+      .addStringOption(option =>
         option
           .setName('issue')
           .setDescription('Describe your issue in detail')
@@ -79,7 +79,7 @@ export default class Support extends Command {
         },
       });
 
-    const departmentOptions = availableDepartments.map((department) => {
+    const departmentOptions = availableDepartments.map(department => {
       return {
         label: department.name,
         value: department.id.toString(),

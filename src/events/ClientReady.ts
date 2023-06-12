@@ -43,7 +43,7 @@ export default class ClientReady extends Event {
 
     if (!id) throw new Error('Client ID not found');
 
-    const commandData = client.commands.map((command) => command.data);
+    const commandData = client.commands.map(command => command.data);
 
     client.logger.info(`Registering ${commandData.length} command(s)...`);
     try {
@@ -135,7 +135,7 @@ export default class ClientReady extends Event {
     }
 
     // Initialise Guilds
-    const guilds = client.guilds.cache.map((guild) => guild);
+    const guilds = client.guilds.cache.map(guild => guild);
     for (let i = 0; i < guilds.length; i++) {
       const guild = guilds[i];
       await client.prisma.guild.upsert({
