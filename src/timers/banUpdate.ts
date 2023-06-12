@@ -3,7 +3,7 @@ import Timer from 'classes/Timer';
 import { TextChannel } from 'discord.js';
 import generateModLogEmbed from 'utils/generateModLogEmbed';
 
-export default class TestTimer extends Timer {
+export default class BanUpdate extends Timer {
   public once = false;
 
   public executeOnStart = true;
