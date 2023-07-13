@@ -22,7 +22,9 @@ Create a file named `config.json` in the root directory of the project. This fil
 
 ```json
 {
-  "token": "[discord bot token]"
+  "token": "[discord bot token]",
+  "owners": ["[bot owner id]"],
+  "feedbackChannel": "[feedback channel id]"
 }
 ```
 

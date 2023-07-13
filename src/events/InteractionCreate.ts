@@ -48,6 +48,37 @@ export default class InteractionCreate extends DiscordEvent {
 
       if (!command) throw new CommandNotFoundException(interaction.commandName);
 
+      const cooldownSeconds = command.cooldown;
+      const cooldownExpiry = Date.now() + cooldownSeconds * 1000;
+
+      if (client.cooldowns.has(`${command.name}-${interaction.user.id}`)) {
+        const cooldown = client.cooldowns.get(
+          `${command.name}-${interaction.user.id}`
+        );
+
+        if (
+          cooldown &&
+          cooldown > Date.now() &&
+          !owners.includes(interaction.user.id)
+        ) {
+          await interaction.reply({
+            content: `> :warning: You are on cooldown for \`/${
+              command.name
+            }\`. It will expire <t:${Math.floor(cooldown / 1000)}:R>.
+              `,
+            ephemeral: true,
+          });
+          return;
+        } else {
+          client.cooldowns.delete(`${command.name}-${interaction.user.id}`);
+        }
+      }
+
+      client.cooldowns.set(
+        `${command.name}-${interaction.user.id}`,
+        cooldownExpiry
+      );
+
       try {
         if (command.devOnly && !owners.includes(interaction.user.id))
           throw new DeveloperOnlyException(command.name);
@@ -95,7 +126,7 @@ export default class InteractionCreate extends DiscordEvent {
       }
     } else if (interaction.isModalSubmit()) {
       const [modal, pathData] = dynamicCustomIdFinder(
-        client.buttons,
+        client.modals,
         (interaction as ModalSubmitInteraction).customId
       );
 

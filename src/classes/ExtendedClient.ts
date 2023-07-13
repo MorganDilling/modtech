@@ -4,11 +4,12 @@ import Button from './Button';
 import Modal from './Modal';
 import Timer from './Timer';
 import Logger from './Logger';
-import { Ban, PrismaClient } from '@prisma/client';
+import { Ban, PrismaClient, Feedback } from '@prisma/client';
 import StringSelectMenu from './StringSelectMenu';
 
 export interface ClientCache {
   bans: Collection<number, Ban>;
+  feedback: Collection<number, Feedback>;
 }
 
 export default class ExtendedClient extends Client {
@@ -21,6 +22,13 @@ export default class ExtendedClient extends Client {
   public prisma: PrismaClient;
   public color: ColorResolvable;
   public cache: ClientCache;
+
+  /**
+   * Key: Command name + user ID (e.g. 'ping-1234567890')
+   *
+   * Value: unix timestamp of when the cooldown will expire
+   */
+  public cooldowns: Collection<string, number>;
 
   constructor(options: ClientOptions) {
     super(options);
@@ -35,6 +43,8 @@ export default class ExtendedClient extends Client {
     this.color = '#5865F2';
     this.cache = {
       bans: new Collection(),
+      feedback: new Collection(),
     };
+    this.cooldowns = new Collection();
   }
 }

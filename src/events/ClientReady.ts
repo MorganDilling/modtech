@@ -21,9 +21,17 @@ export default class ClientReady extends Event {
 
     // Cache
     const bans = await client.prisma.ban.findMany();
+    const feedbacks = await client.prisma.feedback.findMany();
 
     for (const ban of bans) {
       client.cache.bans.set(ban.id, ban);
+    }
+
+    for (const feedback of feedbacks) {
+      if (['rejected', 'accepted', 'closed'].includes(feedback.status)) {
+        client.cache.feedback.set(feedback.id, feedback);
+      }
+      client.cache.feedback.set(feedback.id, feedback);
     }
 
     // Commands

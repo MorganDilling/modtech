@@ -92,3 +92,21 @@ model Ticket {
   issue               String
   claimMessageId      String?
 }
+
+model Feedback {
+  id               Int      @id @default(autoincrement())
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  userId           String
+  message          String
+  status           String
+  attachment1Url   String?
+  attachment2Url   String?
+  attachment3Url   String?
+  response         String?
+  discordMessageId String?
+}
+
+model FeedbackBlacklist {
+  userId String @id @unique
+}
