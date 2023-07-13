@@ -113,13 +113,13 @@ model FeedbackBlacklist {
 }
 
 model BetaInviteCode {
-  id            Int      @id @default(autoincrement())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  code          String   @unique
-  uses          Int      @default(0)
-  maxUses       Int      @default(1)
-  expiresAt     DateTime
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  code          String    @unique
+  uses          Int       @default(0)
+  maxUses       Int       @default(1)
+  expiresAt     DateTime?
   name          String?
   generatedById String?
 }
