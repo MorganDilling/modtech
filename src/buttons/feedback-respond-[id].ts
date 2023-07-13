@@ -8,7 +8,6 @@ import {
   TextInputStyle,
 } from 'discord.js';
 import ExtendedClient from 'classes/ExtendedClient';
-import { createTranscript } from 'discord-html-transcripts';
 
 export default class FeedbackResponse extends Button {
   public async execute(
