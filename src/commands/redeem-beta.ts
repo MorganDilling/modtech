@@ -22,7 +22,7 @@ export default class RedeemBeta extends Command {
     return new SlashCommandBuilder()
       .setName(this.name)
       .setDescription(this.description)
-      .setDMPermission(true)
+      .setDMPermission(false)
       .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
       .addStringOption(option =>
         option
