@@ -23,6 +23,8 @@ export default class Settings extends Command {
 
   description = "Configure your bot's server settings";
 
+  public betaOnly: boolean = true;
+
   get data(): Partial<SlashCommandBuilder> {
     return new SlashCommandBuilder()
       .setName(this.name)
