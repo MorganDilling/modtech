@@ -131,6 +131,10 @@ export default class Settings extends Command {
         settingsDesc += '\n\n';
       }
 
+      if (dbGuild.betaInviteCode) {
+        settingsDesc += `**Beta Invite Code**\n\`${dbGuild.betaInviteCode}\`\n\n`;
+      }
+
       const embed = new EmbedBuilder()
         .setTitle('Settings')
         .setColor(client.color)
