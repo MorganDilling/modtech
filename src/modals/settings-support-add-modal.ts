@@ -93,6 +93,7 @@ export default class SettingsSupportAddModal extends Modal {
 
     await interaction.reply({
       content: `> :white_check_mark: Support department ${emoji} \`${name}\` created`,
+      ephemeral: true,
     });
   }
 }
