@@ -24,7 +24,7 @@ export default class BetaInfo extends Command {
     return new SlashCommandBuilder()
       .setName(this.name)
       .setDescription(this.description)
-      .setDMPermission(true)
+      .setDMPermission(false)
       .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
   }
 
