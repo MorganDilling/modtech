@@ -97,7 +97,7 @@ export default class InteractionCreate extends DiscordEvent {
           !(await verifyBetaCode(client, guild))
         ) {
           await interaction.reply({
-            content: `> :warning: This command is currently in beta. Your server must have a valid beta code to use it.\n\n**Tip:** Use \`/redeem-beta\` to redeem a beta code. Find out more info about the beta programme at https://discord.gg/dUtPVpxKqX.`,
+            content: `> :warning: This command is currently in beta. Your server must have a valid beta code to use it.\n\n**Tip:** Use \`/redeem-beta\` to redeem a beta code. Find out more info about the beta programme at <https://discord.gg/dUtPVpxKqX>.`,
             ephemeral: true,
           });
           return;
