@@ -25,6 +25,13 @@ export default class SupportTicketClaim extends Button {
     interaction: ButtonInteraction,
     pathData: { id: string }
   ): Promise<void> {
+    if (!client.user) {
+      await interaction.reply({
+        content: `> :warning: Failed to claim ticket. (Client does not exist)`,
+      });
+      return;
+    }
+
     const { id: ticketId } = pathData;
     const ticket = await client.prisma.ticket.findUnique({
       where: {
@@ -80,6 +87,11 @@ export default class SupportTicketClaim extends Button {
           },
           {
             id: interaction.user.id,
+            type: OverwriteType.Member,
+            allow: [PermissionFlagsBits.ViewChannel],
+          },
+          {
+            id: client.user.id,
             type: OverwriteType.Member,
             allow: [PermissionFlagsBits.ViewChannel],
           },
@@ -185,6 +197,11 @@ export default class SupportTicketClaim extends Button {
         },
         {
           id: interaction.user.id,
+          type: OverwriteType.Member,
+          allow: [PermissionFlagsBits.ViewChannel],
+        },
+        {
+          id: client.user.id,
           type: OverwriteType.Member,
           allow: [PermissionFlagsBits.ViewChannel],
         },
