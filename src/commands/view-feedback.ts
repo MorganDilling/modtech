@@ -15,6 +15,8 @@ export default class ViewFeedback extends Command {
 
   description = 'View feedback you have sent';
 
+  public betaOnly: boolean = true;
+
   get data(): Partial<SlashCommandBuilder> {
     return new SlashCommandBuilder()
       .setName(this.name)

@@ -11,13 +11,14 @@ datasource db {
 }
 
 model Guild {
-  id        String    @id @unique
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  premium   Boolean   @default(true)
-  settings  Settings?
-  bans      Ban[]
-  tickets   Ticket[]
+  id             String    @id @unique
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  premium        Boolean   @default(true)
+  settings       Settings?
+  bans           Ban[]
+  tickets        Ticket[]
+  betaInviteCode String?
 }
 
 model Settings {
@@ -109,4 +110,16 @@ model Feedback {
 
 model FeedbackBlacklist {
   userId String @id @unique
+}
+
+model BetaInviteCode {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  code          String    @unique
+  uses          Int       @default(0)
+  maxUses       Int       @default(1)
+  expiresAt     DateTime?
+  name          String?
+  generatedById String?
 }

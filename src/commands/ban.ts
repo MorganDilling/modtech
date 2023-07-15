@@ -18,6 +18,8 @@ export default class Ban extends Command {
 
   description = 'Bans a user from the server';
 
+  public betaOnly: boolean = true;
+
   get data(): Partial<SlashCommandBuilder> {
     return new SlashCommandBuilder()
       .setName(this.name)

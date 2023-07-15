@@ -35,6 +35,7 @@ import StringSelectMenu from 'classes/StringSelectMenu';
 import StringSelectMenuNotFoundException from 'exceptions/StringSelectMenuNotFoundException';
 import DeveloperOnlyException from 'exceptions/DeveloperOnlyException';
 import { owners } from '../../config.json';
+import verifyBetaCode from 'utils/verifyBetaCode';
 
 export default class InteractionCreate extends DiscordEvent {
   public once = false;
@@ -82,6 +83,25 @@ export default class InteractionCreate extends DiscordEvent {
       try {
         if (command.devOnly && !owners.includes(interaction.user.id))
           throw new DeveloperOnlyException(command.name);
+
+        const guild = await client.prisma.guild.findUnique({
+          where: {
+            id: interaction.guild?.id,
+          },
+        });
+
+        if (
+          command.betaOnly &&
+          guild &&
+          !owners.includes(interaction.user.id) &&
+          !(await verifyBetaCode(client, guild))
+        ) {
+          await interaction.reply({
+            content: `> :warning: This command is currently in beta. Your server must have a valid beta code to use it.\n\n**Tip:** Use \`/redeem-beta\` to redeem a beta code.`,
+            ephemeral: true,
+          });
+          return;
+        }
 
         await command.execute(client, interaction);
 

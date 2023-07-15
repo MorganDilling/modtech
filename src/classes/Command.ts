@@ -6,6 +6,7 @@ export default abstract class Command {
   public name: string;
   public description: string;
   public devOnly: boolean = false;
+  public betaOnly: boolean = false;
   /**
    * Cooldown in seconds
    */

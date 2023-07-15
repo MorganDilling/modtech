@@ -16,6 +16,8 @@ export default class Feedback extends Command {
 
   cooldown = 3600;
 
+  public betaOnly: boolean = true;
+
   get data(): Partial<SlashCommandBuilder> {
     return new SlashCommandBuilder()
       .setName(this.name)

@@ -18,6 +18,8 @@ export default class Unban extends Command {
 
   description = 'Unbans a user from the server';
 
+  public betaOnly: boolean = true;
+
   get data(): Partial<SlashCommandBuilder> {
     return new SlashCommandBuilder()
       .setName(this.name)

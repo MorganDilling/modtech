@@ -23,6 +23,8 @@ export default class Support extends Command {
 
   description = 'Opens a support ticket';
 
+  public betaOnly: boolean = true;
+
   get data(): Partial<SlashCommandBuilder> {
     return new SlashCommandBuilder()
       .setName(this.name)

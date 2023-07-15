@@ -23,6 +23,8 @@ export default class Settings extends Command {
 
   description = "Configure your bot's server settings";
 
+  public betaOnly: boolean = true;
+
   get data(): Partial<SlashCommandBuilder> {
     return new SlashCommandBuilder()
       .setName(this.name)
@@ -129,6 +131,10 @@ export default class Settings extends Command {
           )
           .join('\n');
         settingsDesc += '\n\n';
+      }
+
+      if (dbGuild.betaInviteCode) {
+        settingsDesc += `**Beta Invite Code**\n\`${dbGuild.betaInviteCode}\`\n\n`;
       }
 
       const embed = new EmbedBuilder()

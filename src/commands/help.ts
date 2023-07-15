@@ -22,6 +22,8 @@ export default class Help extends Command {
 
   description = 'Get commmand help.';
 
+  public betaOnly: boolean = true;
+
   get data(): Partial<SlashCommandBuilder> {
     return new SlashCommandBuilder()
       .setName(this.name)
