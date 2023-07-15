@@ -78,6 +78,15 @@ export default class RevokeCode extends Command {
       },
     });
 
+    await client.prisma.guild.updateMany({
+      where: {
+        betaInviteCode: code,
+      },
+      data: {
+        betaInviteCode: null,
+      },
+    });
+
     await interaction.reply({
       content: `> :white_check_mark: Revoked code \`${code}\``,
       ephemeral: true,
